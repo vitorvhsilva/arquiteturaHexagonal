@@ -19,9 +19,10 @@ public class PersistCustomerUseCase implements PersistCustomerInputPort {
     }
 
     @Override
-    public void persist(Customer customer, String zipCode) {
+    public Customer persist(Customer customer, String zipCode) {
         Address address = findAddress.find(zipCode);
         customer.setAddress(address);
         persistCostumer.persist(customer);
+        return customer;
     }
 }

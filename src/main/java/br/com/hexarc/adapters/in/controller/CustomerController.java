@@ -1,6 +1,7 @@
 package br.com.hexarc.adapters.in.controller;
 
 import br.com.hexarc.adapters.in.controller.dto.in.CreateCustomerInputDTO;
+import br.com.hexarc.adapters.in.controller.dto.out.CreateCustomerOutputDTO;
 import br.com.hexarc.adapters.in.controller.mapper.CustomerControllerMapper;
 import br.com.hexarc.application.core.domain.Customer;
 import br.com.hexarc.application.ports.in.PersistCustomerInputPort;
@@ -22,9 +23,9 @@ public class CustomerController {
     private CustomerControllerMapper controllerMapper;
 
     @PostMapping
-    public ResponseEntity<Void> persist(@Valid @RequestBody CreateCustomerInputDTO dto){
-        Customer customer = controllerMapper.toEntity(dto);
-        persistCustomer.persist(customer, dto.getZipCode());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<CreateCustomerOutputDTO> persist(@Valid @RequestBody CreateCustomerInputDTO dto){
+        Customer customer = controllerMapper.createInputToEntity(dto);
+        Customer persistedCustomer = persistCustomer.persist(customer, dto.getZipCode());
+        return ResponseEntity.status(HttpStatus.CREATED).body(controllerMapper.entityToCreateOutput(persistedCustomer));
     }
 }
