@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class GetAllCostumerAdapter implements GetAllCustomerOutputPort {
+public class GetAllCustomerAdapter implements GetAllCustomerOutputPort {
     private CustomerRepository customerRepository;
     private CustomerEntityMapper entityMapper;
 

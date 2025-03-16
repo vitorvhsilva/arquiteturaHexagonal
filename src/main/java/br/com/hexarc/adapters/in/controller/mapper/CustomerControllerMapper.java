@@ -1,6 +1,7 @@
 package br.com.hexarc.adapters.in.controller.mapper;
 
 import br.com.hexarc.adapters.in.controller.dto.in.CreateCustomerInputDTO;
+import br.com.hexarc.adapters.in.controller.dto.in.UpdateCustomerInputDTO;
 import br.com.hexarc.adapters.in.controller.dto.out.CreateCustomerOutputDTO;
 import br.com.hexarc.adapters.in.controller.dto.out.GetCustomerOutputDTO;
 import br.com.hexarc.application.core.domain.Customer;
@@ -23,5 +24,9 @@ public class CustomerControllerMapper {
 
     public GetCustomerOutputDTO entityToGetCustomer(Customer customer) {
         return modelMapper.map(customer, GetCustomerOutputDTO.class);
+    }
+
+    public Customer updateToEntity(UpdateCustomerInputDTO dto) {
+        return modelMapper.map(dto, Customer.class);
     }
 }

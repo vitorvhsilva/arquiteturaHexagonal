@@ -1,6 +1,7 @@
 package br.com.hexarc.adapters.in.controller;
 
 import br.com.hexarc.adapters.in.controller.dto.in.CreateCustomerInputDTO;
+import br.com.hexarc.adapters.in.controller.dto.in.UpdateCustomerInputDTO;
 import br.com.hexarc.adapters.in.controller.dto.out.CreateCustomerOutputDTO;
 import br.com.hexarc.adapters.in.controller.dto.out.GetCustomerOutputDTO;
 import br.com.hexarc.adapters.in.controller.mapper.CustomerControllerMapper;
@@ -8,8 +9,10 @@ import br.com.hexarc.application.core.domain.Customer;
 import br.com.hexarc.application.ports.in.GetAllCustomerInputPort;
 import br.com.hexarc.application.ports.in.GetCustomerByIdInputPort;
 import br.com.hexarc.application.ports.in.PersistCustomerInputPort;
+import br.com.hexarc.application.ports.in.UpdateCustomerInputPort;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,7 @@ public class CustomerController {
     private PersistCustomerInputPort persistCustomer;
     private GetCustomerByIdInputPort getCustomerById;
     private GetAllCustomerInputPort getAllCustomer;
+    private UpdateCustomerInputPort updateCustomer;
     private CustomerControllerMapper controllerMapper;
 
     @PostMapping
@@ -47,4 +51,12 @@ public class CustomerController {
         GetCustomerOutputDTO getCustomer = controllerMapper.entityToGetCustomer(customer);
         return ResponseEntity.ok(getCustomer);
     }
+
+    @PutMapping()
+    public ResponseEntity<GetCustomerOutputDTO> update(@RequestBody @Valid UpdateCustomerInputDTO dto) {
+        Customer updatedCustomer = controllerMapper.updateToEntity(dto);
+        updatedCustomer = updateCustomer.update(updatedCustomer, dto.getZipCode());
+        return ResponseEntity.ok(controllerMapper.entityToGetCustomer(updatedCustomer));
+    }
+
 }
