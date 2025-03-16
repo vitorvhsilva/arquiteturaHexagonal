@@ -5,9 +5,7 @@ import br.com.hexarc.application.core.domain.Customer;
 import br.com.hexarc.application.ports.in.PersistCustomerInputPort;
 import br.com.hexarc.application.ports.out.FindAddressByZipCodeOutputPort;
 import br.com.hexarc.application.ports.out.PersistCustomerOutputPort;
-import org.springframework.stereotype.Component;
 
-@Component
 public class PersistCustomerUseCase implements PersistCustomerInputPort {
 
     private FindAddressByZipCodeOutputPort findAddress;
