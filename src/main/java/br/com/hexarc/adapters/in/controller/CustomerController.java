@@ -2,17 +2,19 @@ package br.com.hexarc.adapters.in.controller;
 
 import br.com.hexarc.adapters.in.controller.dto.in.CreateCustomerInputDTO;
 import br.com.hexarc.adapters.in.controller.dto.out.CreateCustomerOutputDTO;
+import br.com.hexarc.adapters.in.controller.dto.out.GetCustomerOutputDTO;
 import br.com.hexarc.adapters.in.controller.mapper.CustomerControllerMapper;
 import br.com.hexarc.application.core.domain.Customer;
+import br.com.hexarc.application.ports.in.GetAllCustomerInputPort;
+import br.com.hexarc.application.ports.in.GetCustomerByIdInputPort;
 import br.com.hexarc.application.ports.in.PersistCustomerInputPort;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("costumers")
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class CustomerController {
 
     private PersistCustomerInputPort persistCustomer;
+    private GetCustomerByIdInputPort getCustomerById;
+    private GetAllCustomerInputPort getAllCustomer;
     private CustomerControllerMapper controllerMapper;
 
     @PostMapping
@@ -27,5 +31,20 @@ public class CustomerController {
         Customer customer = controllerMapper.createInputToEntity(dto);
         Customer persistedCustomer = persistCustomer.persist(customer, dto.getZipCode());
         return ResponseEntity.status(HttpStatus.CREATED).body(controllerMapper.entityToCreateOutput(persistedCustomer));
+    }
+
+    @GetMapping()
+    public List<GetCustomerOutputDTO> getAll(){
+        List<Customer> customers = getAllCustomer.getAll();
+        return customers.stream()
+                .map(c -> controllerMapper.entityToGetCustomer(c))
+                .toList();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GetCustomerOutputDTO> get(@RequestParam String id){
+        Customer customer = getCustomerById.get(id);
+        GetCustomerOutputDTO getCustomer = controllerMapper.entityToGetCustomer(customer);
+        return ResponseEntity.ok(getCustomer);
     }
 }

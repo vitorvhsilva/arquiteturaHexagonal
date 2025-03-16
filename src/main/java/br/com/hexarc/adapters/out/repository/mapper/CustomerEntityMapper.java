@@ -12,4 +12,8 @@ public class CustomerEntityMapper {
     public CustomerEntity toEntity(Customer customer) {
         return modelMapper.map(customer, CustomerEntity.class);
     }
+
+    public Customer toCustomer(CustomerEntity customer) {
+        return modelMapper.map(customer, Customer.class);
+    }
 }

@@ -2,6 +2,7 @@ package br.com.hexarc.adapters.in.controller.mapper;
 
 import br.com.hexarc.adapters.in.controller.dto.in.CreateCustomerInputDTO;
 import br.com.hexarc.adapters.in.controller.dto.out.CreateCustomerOutputDTO;
+import br.com.hexarc.adapters.in.controller.dto.out.GetCustomerOutputDTO;
 import br.com.hexarc.application.core.domain.Customer;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,5 +19,9 @@ public class CustomerControllerMapper {
 
     public CreateCustomerOutputDTO entityToCreateOutput(Customer persistedCustomer) {
         return modelMapper.map(persistedCustomer, CreateCustomerOutputDTO.class);
+    }
+
+    public GetCustomerOutputDTO entityToGetCustomer(Customer customer) {
+        return modelMapper.map(customer, GetCustomerOutputDTO.class);
     }
 }
