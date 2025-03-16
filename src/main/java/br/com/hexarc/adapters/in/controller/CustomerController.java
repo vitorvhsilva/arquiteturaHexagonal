@@ -6,10 +6,7 @@ import br.com.hexarc.adapters.in.controller.dto.out.CreateCustomerOutputDTO;
 import br.com.hexarc.adapters.in.controller.dto.out.GetCustomerOutputDTO;
 import br.com.hexarc.adapters.in.controller.mapper.CustomerControllerMapper;
 import br.com.hexarc.application.core.domain.Customer;
-import br.com.hexarc.application.ports.in.GetAllCustomerInputPort;
-import br.com.hexarc.application.ports.in.GetCustomerByIdInputPort;
-import br.com.hexarc.application.ports.in.PersistCustomerInputPort;
-import br.com.hexarc.application.ports.in.UpdateCustomerInputPort;
+import br.com.hexarc.application.ports.in.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +25,7 @@ public class CustomerController {
     private GetCustomerByIdInputPort getCustomerById;
     private GetAllCustomerInputPort getAllCustomer;
     private UpdateCustomerInputPort updateCustomer;
+    private DeleteCustomerInputPort deleteCustomer;
     private CustomerControllerMapper controllerMapper;
 
     @PostMapping
@@ -52,11 +50,16 @@ public class CustomerController {
         return ResponseEntity.ok(getCustomer);
     }
 
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<GetCustomerOutputDTO> update(@RequestBody @Valid UpdateCustomerInputDTO dto) {
         Customer updatedCustomer = controllerMapper.updateToEntity(dto);
         updatedCustomer = updateCustomer.update(updatedCustomer, dto.getZipCode());
         return ResponseEntity.ok(controllerMapper.entityToGetCustomer(updatedCustomer));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@RequestParam String id) {
+        deleteCustomer.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
