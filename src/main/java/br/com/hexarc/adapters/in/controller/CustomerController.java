@@ -44,7 +44,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetCustomerOutputDTO> get(@RequestParam String id){
+    public ResponseEntity<GetCustomerOutputDTO> get(@PathVariable String id){
         Customer customer = getCustomerById.get(id);
         GetCustomerOutputDTO getCustomer = controllerMapper.entityToGetCustomer(customer);
         return ResponseEntity.ok(getCustomer);
@@ -58,7 +58,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@RequestParam String id) {
+    public ResponseEntity<Void> delete(@PathVariable String id) {
         deleteCustomer.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
